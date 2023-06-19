@@ -24,16 +24,12 @@
  */
 package org.slf4j.reload4j;
 
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.helpers.ThreadLocalMapOfStacks;
 import org.slf4j.spi.MDCAdapter;
 
 public class Reload4jMDCAdapter implements MDCAdapter {
-
-    private final ThreadLocalMapOfStacks threadLocalMapOfDeques = new ThreadLocalMapOfStacks();
     
     @Override
     public void clear() {
@@ -104,23 +100,4 @@ public class Reload4jMDCAdapter implements MDCAdapter {
         }
     }
 
-    @Override
-    public void pushByKey(String key, String value) {
-        threadLocalMapOfDeques.pushByKey(key, value);
-    }
-
-    @Override
-    public String popByKey(String key) {
-        return threadLocalMapOfDeques.popByKey(key);    
-     }
-
-    @Override
-    public Deque<String> getCopyOfDequeByKey(String key) {
-        return threadLocalMapOfDeques.getCopyOfDequeByKey(key);
-    }
-
-    @Override
-    public void clearDequeByKey(String key) {
-        threadLocalMapOfDeques.clearDequeByKey(key);
-    }
 }

@@ -24,7 +24,6 @@
  */
 package org.slf4j.helpers;
 
-import java.util.Deque;
 import java.util.Map;
 
 import org.slf4j.spi.MDCAdapter;
@@ -59,23 +58,6 @@ public class NOPMDCAdapter implements MDCAdapter {
 
     public void setContextMap(Map<String, String> contextMap) {
         // NOP
-    }
-
-    @Override
-    public void pushByKey(String key, String value) {
-    }
-
-    @Override
-    public String popByKey(String key) {
-        return null;
-    }
-
-    @Override
-    public Deque<String> getCopyOfDequeByKey(String key) {
-        return null;
-    }
-    
-    public void clearDequeByKey(String key) {
     }
 
 }

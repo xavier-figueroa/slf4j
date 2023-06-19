@@ -252,48 +252,4 @@ public class MDC {
         return mdcAdapter;
     }
 
-
-
-    /**
-     * Push a value into the deque(stack) referenced by 'key'.
-     *      
-     * @param key identifies the appropriate stack
-     * @param value the value to push into the stack
-     * @since 2.0.0
-     */
-    static public void pushByKey(String key, String value) {
-        if (mdcAdapter == null) {
-            throw new IllegalStateException(MDC_APAPTER_CANNOT_BE_NULL_MESSAGE);
-        }
-        mdcAdapter.pushByKey(key, value);
-    }
-    
-    /**
-     * Pop the stack referenced by 'key' and return the value possibly null.
-     * 
-     * @param key identifies the deque(stack)
-     * @return the value just popped. May be null/
-     * @since 2.0.0
-     */
-    static public String popByKey(String key) {
-        if (mdcAdapter == null) {
-            throw new IllegalStateException(MDC_APAPTER_CANNOT_BE_NULL_MESSAGE);
-        }
-        return mdcAdapter.popByKey(key);
-    }
-
-    /**
-     * Returns a copy of the deque(stack) referenced by 'key'. May be null.
-     * 
-     * @param key identifies the  stack
-     * @return copy of stack referenced by 'key'. May be null.
-     * 
-     * @since 2.0.0
-     */
-    public Deque<String>  getCopyOfDequeByKey(String key) {
-        if (mdcAdapter == null) {
-            throw new IllegalStateException(MDC_APAPTER_CANNOT_BE_NULL_MESSAGE);
-        }
-        return mdcAdapter.getCopyOfDequeByKey(key);
-    }
 }

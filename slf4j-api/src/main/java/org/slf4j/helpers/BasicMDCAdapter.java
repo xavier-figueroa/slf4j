@@ -43,9 +43,7 @@ import java.util.*;
  */
 public class BasicMDCAdapter implements MDCAdapter {
 
-    private final ThreadLocalMapOfStacks threadLocalMapOfDeques = new ThreadLocalMapOfStacks();
-
-    private final InheritableThreadLocal<Map<String, String>> inheritableThreadLocalMap = new InheritableThreadLocal<Map<String, String>>() {
+    private final InheritableThreadLocal<Map<String, String>> inheritableThreadLocalMap = new InheritableThreadLocal<>() {
         @Override
         protected Map<String, String> childValue(Map<String, String> parentValue) {
             if (parentValue == null) {
@@ -113,21 +111,6 @@ public class BasicMDCAdapter implements MDCAdapter {
     }
 
     /**
-     * Returns the keys in the MDC as a {@link Set} of {@link String}s The
-     * returned value can be null.
-     *
-     * @return the keys in the MDC
-     */
-    public Set<String> getKeys() {
-        Map<String, String> map = inheritableThreadLocalMap.get();
-        if (map != null) {
-            return map.keySet();
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Return a copy of the current thread's context map.
      * Returned value may be null.
      *
@@ -149,22 +132,4 @@ public class BasicMDCAdapter implements MDCAdapter {
         inheritableThreadLocalMap.set(copy);
     }
 
-    @Override
-    public void pushByKey(String key, String value) {
-        threadLocalMapOfDeques.pushByKey(key, value);
-    }
-
-    @Override
-    public String popByKey(String key) {
-        return threadLocalMapOfDeques.popByKey(key);    
-     }
-
-    @Override
-    public Deque<String> getCopyOfDequeByKey(String key) {
-        return threadLocalMapOfDeques.getCopyOfDequeByKey(key);
-    }
-    @Override
-    public void clearDequeByKey(String key) {
-        threadLocalMapOfDeques.clearDequeByKey(key);
-    }
 }
