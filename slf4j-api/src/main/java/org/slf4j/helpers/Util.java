@@ -50,10 +50,7 @@ public final class Util {
 
     public static boolean safeGetBooleanSystemProperty(String key) {
         String value = safeGetSystemProperty(key);
-        if (value == null)
-            return false;
-        else
-            return value.equalsIgnoreCase("true");
+        return Boolean.parseBoolean(value);
     }
 
     /**
