@@ -19,51 +19,41 @@ public class ThreadLocalMapOfStacks {
     // not included in the JDK. See also https://jira.qos.ch/browse/LOGBACK-450
 
     final ThreadLocal<Map<String, Deque<String>>> tlMapOfStacks = new ThreadLocal<>();
+    {
+        tlMapOfStacks.set(new HashMap<>());
+    }
 
     public void pushByKey(String key, String value) {
         if (key == null)
             return;
 
-        Map<String, Deque<String>> map = tlMapOfStacks.get();
-
-        if (map == null) {
-            map = new HashMap<>();
-            tlMapOfStacks.set(map);
-        }
-
-        Deque<String> deque = map.get(key);
+        Deque<String> deque = tlMapOfStacks.get().get(key);
         if (deque == null) {
             deque = new ArrayDeque<>();
         }
+
         deque.push(value);
-        map.put(key, deque);
+        tlMapOfStacks.get().put(key, deque);
     }
 
     public String popByKey(String key) {
-        if (key == null)
-            return null;
+        Deque<String> deque = getExistingDeque(key);
 
-        Map<String, Deque<String>> map = tlMapOfStacks.get();
-        if (map == null)
-            return null;
-        Deque<String> deque = map.get(key);
-        if (deque == null)
-            return null;
-        return deque.pop();
+        return deque == null ? null : deque.pop();
     }
 
     public Deque<String> getCopyOfDequeByKey(String key) {
-        if (key == null)
-            return null;
+        Deque<String> deque = getExistingDeque(key);
 
-        Map<String, Deque<String>> map = tlMapOfStacks.get();
-        if (map == null)
-            return null;
-        Deque<String> deque = map.get(key);
-        if (deque == null)
-            return null;
+        return deque == null ? null : new ArrayDeque<>(deque);
+    }
 
-        return new ArrayDeque<String>(deque);
+    private Deque<String> getExistingDeque(String key) {
+        if(key == null) {
+            return null;
+        }
+
+        return tlMapOfStacks.get().get(key);
     }
     
     /**
@@ -74,16 +64,10 @@ public class ThreadLocalMapOfStacks {
      * @since 2.0.0
      */
     public void clearDequeByKey(String key) {
-        if (key == null)
-            return;
-
-        Map<String, Deque<String>> map = tlMapOfStacks.get();
-        if (map == null)
-            return;
-        Deque<String> deque = map.get(key);
-        if (deque == null)
-            return;
-        deque.clear();
+        Deque<String> deque = getExistingDeque(key);
+        if(deque != null) {
+            deque.clear();
+        }
     }
 
 }
